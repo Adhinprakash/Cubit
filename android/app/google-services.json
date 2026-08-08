@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1088886341534",
+    "project_id": "cubit-85c63",
+    "storage_bucket": "cubit-85c63.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088886341534:android:48a91a96d125c30920608f",
+        "android_client_info": {
+          "package_name": "com.example.cubit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAx3x6qfkKRKOccgtVx9J6Ibw8Frwx6Rhk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
