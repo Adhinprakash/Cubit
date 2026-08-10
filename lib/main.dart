@@ -1,6 +1,6 @@
 
 
-import 'package:cubit/features/auth/data/auth_repository.dart';
+import 'package:cubit/features/auth/repository/auth_repository.dart';
 import 'package:cubit/features/auth/login/cubit/login_cubit.dart';
 import 'package:cubit/features/auth/login/view/login.dart';
 import 'package:cubit/features/auth/signup/cubit/signup_cubit.dart';

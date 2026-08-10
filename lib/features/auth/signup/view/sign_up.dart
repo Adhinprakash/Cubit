@@ -1,7 +1,7 @@
 import 'package:cubit/features/auth/login/view/login.dart';
 import 'package:cubit/features/auth/signup/cubit/signup_cubit.dart';
 import 'package:cubit/features/auth/signup/cubit/signup_state.dart';
-import 'package:cubit/view/screen_home.dart';
+import 'package:cubit/features/Home/view/screen_home.dart';
 import 'package:cubit/widgets/custom_button.dart';
 import 'package:cubit/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';

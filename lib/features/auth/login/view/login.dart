@@ -3,7 +3,7 @@ import 'package:cubit/features/auth/login/cubit/login_state.dart';
 
 import 'package:cubit/features/auth/signup/cubit/signup_state.dart';
 import 'package:cubit/features/auth/signup/view/sign_up.dart';
-import 'package:cubit/view/screen_home.dart';
+import 'package:cubit/features/Home/view/screen_home.dart';
 import 'package:cubit/widgets/custom_button.dart';
 import 'package:cubit/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
