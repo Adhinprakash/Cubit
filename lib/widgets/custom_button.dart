@@ -13,9 +13,12 @@ class CustomButton extends StatelessWidget {
         ontap();
       },
       child: Container(
+        width: 200,
+        padding: EdgeInsets.symmetric(horizontal:12,vertical: 6),
         height: 50,
       
-        decoration: BoxDecoration(color: Colors.black),
+        decoration: BoxDecoration(color: Colors.green,shape: BoxShape.rectangle,borderRadius: BorderRadius.circular(15)),
+        
         child: Center(child: buttonWidget),
       ),
     );

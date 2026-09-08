@@ -1,0 +1,6 @@
+List<String>carouselImages=[
+  'https://imgs.search.brave.com/rRnLz6ozxLuQxzSov9EHlyERNQsZQLv5_OY6tyYd0G4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMDUv/NDU0LzgzNi9zbWFs/bC9oYXBweS12YWxl/bnRpbmUtcy1kYXkt/c2FsZS1iYW5uZXIt/b3ItcHJvbW90aW9u/LW9uLWJsdWUtYmFj/a2dyb3VuZC1vbmxp/bmUtc2hvcHBpbmct/c3RvcmUtd2l0aC1t/b2JpbGUtY3JlZGl0/LWNhcmRzLWFuZC1z/aG9wLWVsZW1lbnRz/LWlsbHVzdHJhdGlv/bi1mcmVlLXZlY3Rv/ci5qcGc',
+  'https://imgs.search.brave.com/cuuAoJ7kqd1Uee6Cws2XdgRRKiVAJIRv5l5UZ0kXQGQ/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMDIv/MDU4Lzk4Ni9zbWFs/bC9vbmxpbmUtc2hv/cHBpbmctc3RvcmUt/b24td2Vic2l0ZS1h/bmQtbW9iaWxlLXBo/b25lLWRlc2lnbi1z/bWFydC1idXNpbmVz/cy1tYXJrZXRpbmct/Y29uY2VwdC1ob3Jp/em9udGFsLXZpZXct/aWxsdXN0cmF0aW9u/LWZyZWUtdmVjdG9y/LmpwZw',
+     'https://imgs.search.brave.com/rRnLz6ozxLuQxzSov9EHlyERNQsZQLv5_OY6tyYd0G4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMDUv/NDU0LzgzNi9zbWFs/bC9oYXBweS12YWxl/bnRpbmUtcy1kYXkt/c2FsZS1iYW5uZXIt/b3ItcHJvbW90aW9u/LW9uLWJsdWUtYmFj/a2dyb3VuZC1vbmxp/bmUtc2hvcHBpbmct/c3RvcmUtd2l0aC1t/b2JpbGUtY3JlZGl0/LWNhcmRzLWFuZC1z/aG9wLWVsZW1lbnRz/LWlsbHVzdHJhdGlv/bi1mcmVlLXZlY3Rv/ci5qcGc',
+
+];

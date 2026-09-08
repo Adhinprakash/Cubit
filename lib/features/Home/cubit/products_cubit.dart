@@ -15,7 +15,7 @@ try{
 emit(state.copyWith(products: allproducts.products,status: ProductsStaus.loaded));
 
 }catch(e){
-emit(state.copyWith(errormessage: e.toString()));
+emit(state.copyWith(status: ProductsStaus.failed,errormessage: e.toString()));
 }
   }
 }
