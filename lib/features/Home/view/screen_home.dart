@@ -3,6 +3,8 @@ import 'package:cubit/const/const.dart';
 import 'package:cubit/features/Home/cubit/products_cubit.dart';
 import 'package:cubit/features/Home/cubit/products_state.dart';
 import 'package:cubit/features/Home/view/screen_product_details.dart';
+import 'package:cubit/features/cart/view/screen_cart.dart';
+import 'package:cubit/features/favorites/view/screen_fav.dart';
 import 'package:cubit/model/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,36 +28,61 @@ class _ScreenHomeState extends State<ScreenHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+                backgroundColor: const Color(0xFFF8F9FA),
+
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           spacing: 10,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             homeTextFormField(),
-            Container(
-              height: 50,
-              width: 50,
-              child: Center(
-                child: Icon(
-                  Icons.shopping_bag_outlined,
-                  size: 27,
-                  color: Colors.blueGrey,
+            InkWell(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenCart(),)),
+              child: Container(
+                height: 40,
+                width: 40,
+                child: Center(
+                  child: Icon(
+                    Icons.shopping_bag_outlined,
+                    size: 27,
+                    color: Colors.black,
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 0.2),
+                  color: Colors.white,
+                  shape: BoxShape.circle,
                 ),
               ),
-              decoration: BoxDecoration(
-                border: Border.all(),
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
             ),
+             Expanded(
+               child: InkWell(
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenFav(),)),
+                 child: Container(
+                  height: 40,
+                  width: 40,
+                  child: Center(
+                    child: Icon(
+                      Icons.favorite,
+                      size: 27,
+                      color: Colors.black,
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 0.2),
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                             ),
+               ),
+             ),
           ],
         ),
-        backgroundColor: Colors.white ,
         flexibleSpace: Container(),
         actions: [],
         toolbarHeight: 100,
       ),
-      backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFF8F9FA),
       body: SafeArea(
         child: BlocBuilder<ProductsCubit, ProductsState>(
           builder: (context, state) {
@@ -63,38 +90,49 @@ class _ScreenHomeState extends State<ScreenHome> {
               decoration: BoxDecoration(
                
               ),
-              child: Column(
-                children: [
-                  // homeCarouselWidget(carouselImages),
-                  Expanded(
-                    flex: 0,
-                    child: SizedBox(
-                      height: 70,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.products.length,
-                        itemBuilder: (context, index) {
-                          final List categorylist = [];
-                          categorylist.add(state.products[index].category);
-
-                          debugPrint("${categorylist}---------");
-
-                          return state.status == ProductsStaus.loaded
-                              ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: categoryWidget(
-                                    // catergoryText: '${products[index].category}',
-                                  ),
-                                )
-                              : Container(child: Text('data'));
-                        },
+              child: Padding(
+                padding: const EdgeInsets.all(13),
+                child: Column(
+                  children: [
+                    // homeCarouselWidget(carouselImages),
+                
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                      Text('categories',style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),),
+                                          Text('see all',style: TextStyle(color: Colors.green,fontSize: 14,fontWeight: FontWeight.bold,),)
+                
+                    ],),
+                    Expanded(
+                      flex: 0,
+                      child: SizedBox(
+                        height: 70,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.products.length,
+                          itemBuilder: (context, index) {
+                            final List categorylist = [];
+                            categorylist.add(state.products[index].category);
+                
+                            debugPrint("${categorylist}---------");
+                
+                            return state.status == ProductsStaus.loaded
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: categoryWidget(
+                                      // catergoryText: '${products[index].category}',
+                                    ),
+                                  )
+                                : Container(child: Text('data'));
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(child: gridviewLayoutCard()),
-
-                  Row(children: []),
-                ],
+                    Expanded(child: gridviewLayoutCard()),
+                
+                    Row(children: []),
+                  ],
+                ),
               ),
             );
           },
@@ -104,21 +142,35 @@ class _ScreenHomeState extends State<ScreenHome> {
   }
 
   Widget homeTextFormField() {
-    return SizedBox(
+    return Container(
+      height: 46,
       width: 300,
-      height: 50,
-      child: TextFormField(
-        decoration: InputDecoration(
-          fillColor: Colors.white,
-          filled: true,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          prefixIcon: Icon(Icons.search),
-          labelText: "Search",
-
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        ),
+      decoration: BoxDecoration(
+    color: const Color(0xFFF1F2F2),
+    borderRadius: BorderRadius.circular(11),
+      ),
+      child: const TextField(
+    textAlignVertical: TextAlignVertical.center,
+    decoration: InputDecoration(
+      hintText: 'Search',
+      hintStyle: TextStyle(
+        fontSize: 14,
+        color: Color(0xFF9A9A9A),
+      ),
+      border: InputBorder.none,
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 16,
+      ),
+      suffixIcon: Icon(
+        Icons.search,
+        size: 23,
+        color: Color(0xFF222222),
+      ),
+      suffixIconConstraints: BoxConstraints(
+        minWidth: 48,
+        minHeight: 46,
+      ),
+    ),
       ),
     );
   }
@@ -137,9 +189,8 @@ class _ScreenHomeState extends State<ScreenHome> {
 
   Widget categoryWidget({String? catergoryText}) {
     return Container(
-      width: 100,
       height: 100,
-      padding: EdgeInsets.all(14),
+      padding: EdgeInsets.symmetric(vertical: 8,horizontal: 25),
       decoration: BoxDecoration(
         border: Border.all(),
         borderRadius: BorderRadius.circular(12),
@@ -178,8 +229,9 @@ class _ScreenHomeState extends State<ScreenHome> {
                   CrossAxisAlignment.start,
                   children: [
                    Container(
-                    height: 200,
-                  decoration: BoxDecoration(color: Colors.amber,borderRadius: BorderRadius.circular(16)),
+                    height: 190,
+                  decoration: BoxDecoration(   color: const Color(0xFFF1F2F2),
+borderRadius: BorderRadius.circular(16)),
                      child: Padding(
                        padding: const EdgeInsets.all(8.0),
                        child: ClipRRect (

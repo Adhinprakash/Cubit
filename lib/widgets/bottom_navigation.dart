@@ -1,4 +1,6 @@
 import 'package:cubit/features/Home/view/screen_home.dart';
+import 'package:cubit/features/cart/view/screen_cart.dart';
+import 'package:cubit/features/favorites/view/screen_fav.dart';
 import 'package:cubit/features/profile/view/screen_profile.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +17,17 @@ int _currrentindex=0;
 
   List<Widget>_screens=[
     ScreenHome(),
-    ScreenProfile()
+    ScreenFav(),
+    ScreenProfile(),
+
 
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(body:_screens[_currrentindex] ,bottomNavigationBar: BottomNavigationBar(
+      unselectedItemColor: Colors.black,
+    selectedItemColor: Colors.green,
+
        currentIndex: _currrentindex,
        onTap: (value) {
         setState(() {
@@ -29,8 +36,10 @@ int _currrentindex=0;
         });
        },
       items: [
-      BottomNavigationBarItem(icon: Icon(Icons.home_outlined),label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.person,),label: "Profile")
+      BottomNavigationBarItem(icon: Icon(Icons.home_rounded),label: "Home"),
+            BottomNavigationBarItem(icon: Icon(Icons.favorite_border),label: "Favorites"),
+
+            BottomNavigationBarItem(icon: Icon(Icons.person_outline_sharp,),label: "Profile",)
 
     ]),);
   }

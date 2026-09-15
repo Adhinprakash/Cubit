@@ -17,6 +17,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             expandedHeight: 400,
 
             pinned: true,
@@ -125,6 +126,38 @@ class _ProductDetailsState extends State<ProductDetails> {
                     "Developed a full-featured e-commerce application with Firebase authentication, RESTful product APIs, product search and filtering, wishlist, cart management, checkout, and order tracking. Implemented Cubit-based state management, Firestore persistence, pagination, and Firebase Cloud Messaging for order notifications.",
                     style: TextStyle(color: Colors.black54, fontSize: 15),
                   ),
+
+                  SizedBox(height: 10),
+                  Row(
+                    spacing: 10,
+                    children: [
+                      Container(
+                        width: 100,
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(child: Text('Color')),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                      ),
+
+                      Container(
+                        width: 100,
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(child: Text('')),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 17),
                   Text(
                     'Top reviews',
@@ -156,27 +189,30 @@ class _ProductDetailsState extends State<ProductDetails> {
                   stockContainer(),
                   SizedBox(height: 10),
                   shippingWarnatyContainer(),
-                  SizedBox(height: 10,),
-productInfo()
-
+                  SizedBox(height: 10),
+                  productInfo(),
                 ],
               ),
             ),
           ),
         ],
       ),
-      bottomNavigationBar: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          cartCountWidget(),
-          CustomButton(
-            ontap: () {},
-            buttonWidget: Text(
-              'Add to cart',
-              style: TextStyle(color: Colors.white, fontSize: 15),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            cartCountWidget(),
+            CustomButton(
+              ontap: () {},
+              buttonWidget: Text(
+                'Add to cart',
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -408,7 +444,7 @@ Widget shippingWarnatyContainer() {
             Icon(Icons.shield, size: 18, color: Colors.black),
 
             Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
                 Text(
@@ -436,29 +472,31 @@ Widget shippingWarnatyContainer() {
   );
 }
 
-
-Widget returnPolicyWidget(){
-
+Widget returnPolicyWidget() {
   return Container(
-      padding: EdgeInsets.all(10),
+    padding: EdgeInsets.all(10),
     decoration: BoxDecoration(
       shape: BoxShape.rectangle,
       borderRadius: BorderRadius.circular(13),
       border: Border.all(width: 0.4),
-      
     ),
     child: Row(
       children: [
         Container(
-          decoration: BoxDecoration(color: Colors.grey,shape: BoxShape.circle,),
-          child: Center(child: Icon(Icons.replay_circle_filled_outlined,color: Colors.black,),),
-        )
+          decoration: BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+          child: Center(
+            child: Icon(
+              Icons.replay_circle_filled_outlined,
+              color: Colors.black,
+            ),
+          ),
+        ),
       ],
     ),
   );
 }
 
-Widget productInfo(){
+Widget productInfo() {
   return Container(
     padding: EdgeInsets.all(10),
     decoration: BoxDecoration(
@@ -487,17 +525,19 @@ Widget productInfo(){
           spacing: 30,
           children: [Text('Dimension'), Text('BEA-ESS-ESS-001')],
         ),
-                Divider(),
+        Divider(),
 
-         Row(
+        Row(
           spacing: 30,
-          children: [Row(
-            children: [
-              Icon(Icons.qr_code_2_rounded,color: Colors.black,),
-              Text('Qr code'),
-
-            ],
-          ), Text('BEA-ESS-ESS-001')],
+          children: [
+            Row(
+              children: [
+                Icon(Icons.qr_code_2_rounded, color: Colors.black),
+                Text('Qr code'),
+              ],
+            ),
+            Text('BEA-ESS-ESS-001'),
+          ],
         ),
       ],
     ),
