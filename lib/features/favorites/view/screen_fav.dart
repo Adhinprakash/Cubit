@@ -1,10 +1,18 @@
+import 'package:cubit/features/Home/cubit/products_cubit.dart';
+import 'package:cubit/features/Home/cubit/products_state.dart';
+import 'package:cubit/features/Home/view/screen_product_details.dart';
+import 'package:cubit/features/favorites/cubit/favorite_cubit.dart';
+import 'package:cubit/model/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ScreenFav extends StatelessWidget {
   const ScreenFav({super.key});
 
   @override
   Widget build(BuildContext context) {
+                          final favList= context.watch<FavoriteCubit>().state.favIdsList.toList();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFF8F9FA),
@@ -43,29 +51,34 @@ class ScreenFav extends StatelessWidget {
          backgroundColor: const Color(0xFFF8F9FA),
 
       body: SafeArea(
-        child: Padding(
+        child:BlocBuilder<ProductsCubit,ProductsState>(builder: (context, state) {
+                            final favoriteProducts=state.visibleproducts.where((e)=>favList.contains(e.id.toString())).toList();
+
+          return  Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13,vertical: 20),
           child: Column(
             children: [
           Expanded(child: ListView.builder(
-            itemCount: 20,
+            itemCount: favoriteProducts.length,
             itemBuilder: (context, index) {
-            return favItem('https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/1.webp','Essence Mascara Lash Princess','Black',9.99,1);
+
+            return GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetails(product:favoriteProducts[index]),)),
+              child: favItem(favoriteProducts[index],context));
           },))
             ],
           ),
-        ),
+        );
+        },)
       ),
     );
   }
 
 
   Widget favItem(
-     String imageUrl,
-   String title,
-   String subtitle,
-   double price,
-   int quantity){
+   Products prouduct,
+   BuildContext context
+   ){
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -86,7 +99,7 @@ class ScreenFav extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(14),
               child: Image.network(
-                imageUrl,
+                prouduct.thumbnail??'',
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   return const Icon(
@@ -112,7 +125,7 @@ class ScreenFav extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          title,
+                          prouduct.title??'',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -126,13 +139,22 @@ class ScreenFav extends StatelessWidget {
 
                       const SizedBox(width: 6),
 
-                      GestureDetector(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.favorite,
-                          size: 20,
-                          color: Colors.red,
-                        ),
+                      Builder(
+                        builder: (context) {
+                                                bool isFav=                  context.select((FavoriteCubit c)=>c.isFav(prouduct.id.toString()));
+
+                          return GestureDetector(
+                            onTap: () {
+                              context.read<FavoriteCubit>().toggleFavorite(prouduct.id.toString());
+                            },
+                            child:  Icon(
+                             isFav? Icons.favorite:Icons.favorite_border,
+                             size: 20,
+                             color:isFav?Colors.red:Colors.transparent,
+                             
+                            ),
+                          );
+                        }
                       ),
                     ],
                   ),
@@ -140,7 +162,7 @@ class ScreenFav extends StatelessWidget {
                   const SizedBox(height: 5),
 
                   Text(
-                    subtitle,
+                   prouduct.brand??'',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -155,7 +177,7 @@ class ScreenFav extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${price.toStringAsFixed(2)}',
+                        '\$${prouduct.price.toString()}',
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,

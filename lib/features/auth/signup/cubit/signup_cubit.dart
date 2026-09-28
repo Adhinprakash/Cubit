@@ -11,8 +11,8 @@ class SignupCubit extends Cubit<SignupState>{
 Future<void>signUp({required String email,required String password})async{
   try{
     emit(SignUpLoading());
-await authRepository.signup(email: email, password: password);
-emit(SignUpLoaded());
+ UserCredential userCredential=await authRepository.signup(email: email, password: password);
+await authRepository.addTofirebase(userCredential.user!.uid,email);emit(SignUpLoaded());
   }on FirebaseAuthException catch(e){
     emit(SignUpError(e.toString()));
   }

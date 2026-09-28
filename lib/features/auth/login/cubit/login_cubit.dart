@@ -12,7 +12,8 @@ class LoginCubit extends Cubit<LoginState>{
   Future<void>login(String email,String password)async{
   try{
 emit(state.copyWith(status: LoginStatus.loading));
-await authRepository.login(email: email, password: password);
+  UserCredential userCredential=await authRepository.login(email: email, password: password);
+await authRepository.addTofirebase(userCredential.user!.uid,email);
 emit(state.copyWith(status: LoginStatus.loaded));
   } on FirebaseAuthException catch(e){
     emit(state.copyWith(status: LoginStatus.errormessage,errormessage: e.toString()));
@@ -20,5 +21,10 @@ emit(state.copyWith(status: LoginStatus.loaded));
     emit(state.copyWith(status: LoginStatus.errormessage,errormessage: e.toString()));
   }
     
+  }
+  Future<void>logout()async{
+
+   await FirebaseAuth.instance.signOut();
+
   }
 }

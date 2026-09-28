@@ -18,4 +18,9 @@ emit(state.copyWith(products: allproducts.products,status: ProductsStaus.loaded)
 emit(state.copyWith(status: ProductsStaus.failed,errormessage: e.toString()));
 }
   }
+
+
+ void selectCategory(String category){
+  emit(state.copyWith(selectedCategory: category));
+ }
 }

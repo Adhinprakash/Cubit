@@ -1,9 +1,12 @@
+import 'package:cubit/features/favorites/cubit/favorite_cubit.dart';
 import 'package:cubit/model/product_model.dart';
 import 'package:cubit/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key});
+  final Products product;
+  const ProductDetails({super.key, required this.product});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -13,6 +16,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     final topPadding = MediaQuery.of(context).padding.top;
+    bool isfav= context.select<FavoriteCubit,bool>((cubit)=>cubit.isFav(widget.product.id.toString()));
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -25,7 +29,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               background: Stack(
                 children: [
                   Image.network(
-                    'https://i.pinimg.com/736x/d7/93/87/d79387bfc2e42110f54f7594f7fb15bc.jpg',
+                    widget.product.thumbnail??'',
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),
@@ -34,13 +38,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                     left: 16,
                     child: topWidgetcontainers(
                       Icons.arrow_back_ios,
-                      () => Navigator.pop,
+                      () =>          Navigator.pop(context)
+,Colors.black
                     ),
                   ),
                   Positioned(
                     top: topPadding,
                     right: 16,
-                    child: topWidgetcontainers(Icons.favorite, () => {}),
+                    child: topWidgetcontainers(Icons.favorite, () => 
+                      context.read<FavoriteCubit>().toggleFavorite(widget.product.id.toString())
+                    ,isfav?Colors.red:Colors.black),
                   ),
                 ],
               ),
@@ -55,18 +62,18 @@ class _ProductDetailsState extends State<ProductDetails> {
                 children: [
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    child: Text(
-                      'Beauty',
-                      style: TextStyle(color: Colors.red, fontSize: 12),
-                    ),
                     decoration: BoxDecoration(
                       color: Colors.red[100],
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    child: Text(
+                      widget.product.category??'N/A',
+                      style: TextStyle(color: Colors.red, fontSize: 12),
+                    ),
                   ),
                   Text(
-                    'Title',
+                    widget.product.title??'',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 22,
@@ -76,18 +83,18 @@ class _ProductDetailsState extends State<ProductDetails> {
                   Row(
                     children: [
                       Text('Brand: '),
-                      Text('Essence', style: TextStyle(color: Colors.green)),
+                      Text( widget.product.brand??'', style: TextStyle(color: Colors.green)),
                     ],
                   ),
                   SizedBox(height: 10),
                   Row(
                     children: [
-                      textContainer('4.8', Icons.star, Colors.yellow),
+                      textContainer( '${ widget.product.rating.toString()}', Icons.star, Colors.yellow),
                       SizedBox(width: 10),
 
                       SizedBox(width: 10),
                       Text(
-                        '(117 reviews)',
+                        '${ widget.product.reviews?.length.toString()} reviews',
                         style: TextStyle(color: Colors.grey),
                       ),
                     ],
@@ -97,7 +104,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "S 9.99",
+                        '\$${ widget.product.price??''}',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 30,
@@ -109,21 +116,21 @@ class _ProductDetailsState extends State<ProductDetails> {
                           horizontal: 12,
                           vertical: 6,
                         ),
-                        child: Text(
-                          '10.45% off',
-                          style: TextStyle(color: Colors.red, fontSize: 12),
-                        ),
                         decoration: BoxDecoration(
                           color: Colors.red[100],
                           shape: BoxShape.rectangle,
                           borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '${ widget.product.discountPercentage??''}%',
+                          style: TextStyle(color: Colors.red, fontSize: 12),
                         ),
                       ),
                     ],
                   ),
 
                   Text(
-                    "Developed a full-featured e-commerce application with Firebase authentication, RESTful product APIs, product search and filtering, wishlist, cart management, checkout, and order tracking. Implemented Cubit-based state management, Firestore persistence, pagination, and Firebase Cloud Messaging for order notifications.",
+                    widget.product.description??'',
                     style: TextStyle(color: Colors.black54, fontSize: 15),
                   ),
 
@@ -180,17 +187,17 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                   Row(
                     spacing: 10,
-                    children: [tagContainer('beauty'), tagContainer('mascara')],
+                    children:widget.product.tags?.map((e)=>tagContainer(e)).toList()??[]
                   ),
-                  SizedBox(height: 10),
-                  productDetailsContainer(),
-                  SizedBox(height: 10),
+                  SizedBox(height: 25),
+                  productDetailsContainer(widget.product),
+                  SizedBox(height: 25),
 
                   stockContainer(),
-                  SizedBox(height: 10),
+                  SizedBox(height: 25),
                   shippingWarnatyContainer(),
-                  SizedBox(height: 10),
-                  productInfo(),
+                  SizedBox(height: 25),
+                  productInfo(widget.product),
                 ],
               ),
             ),
@@ -286,12 +293,12 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  Widget topWidgetcontainers(IconData icon, Function fucntion) {
+  Widget topWidgetcontainers(IconData icon, VoidCallback fucntion,Color iconColor) {
     return Container(
       width: 45,
       height: 45,
       decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-      child: IconButton(onPressed: () => fucntion, icon: Icon(icon)),
+      child: IconButton(onPressed:fucntion, icon: Icon(icon,color: iconColor,)),
     );
   }
 }
@@ -328,7 +335,7 @@ Widget tagContainer(String title) {
   );
 }
 
-Widget productDetailsContainer() {
+Widget productDetailsContainer(Products product) {
   return Container(
     padding: EdgeInsets.all(10),
     decoration: BoxDecoration(
@@ -348,28 +355,107 @@ Widget productDetailsContainer() {
             fontWeight: FontWeight.bold,
           ),
         ),
-        Row(spacing: 30, children: [Text('SKU'), Text('BEA-ESS-ESS-001')]),
+        _detailRow(title: 'SKI', value: product.sku ?? '-'),
         Divider(),
+        _detailRow(title: 'Weight', value: '${product.weight ?? 0} g'),
 
-        Row(spacing: 30, children: [Text('SKU'), Text('BEA-ESS-ESS-001')]),
         Divider(),
-        Row(
-          spacing: 30,
-          children: [Text('Dimension'), Text('BEA-ESS-ESS-001')],
-        ),
+        _detailRow(
+            title: 'Dimensions',
+            value:
+                'Width: ${product.dimensions?.width ?? 0} cm  |  '
+                'Height: ${product.dimensions?.height ?? 0} cm  |  '
+                'Depth: ${product.dimensions?.depth ?? 0} cm',
+          ),
+
+ Divider(),
+          _detailRow(
+            title: 'Minimum Order\nQuantity',
+            value: '${product.minimumOrderQuantity ?? 0}',
+          ),
       ],
     ),
   );
 }
 
+
+  Widget _infoRow({
+    required String title,
+    required String value,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xff667085),
+            ),
+          ),
+        ),
+
+        Expanded(
+          flex: 3,
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xff344054),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+Widget _detailRow({
+    required String title,
+    required String value,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xff667085),
+            ),
+          ),
+        ),
+
+        Expanded(
+          flex: 4,
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xff344054),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
 Widget stockContainer() {
   return Container(
+    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+    height: 70,
     decoration: BoxDecoration(
       color: Colors.green[100],
       shape: BoxShape.rectangle,
       borderRadius: BorderRadius.circular(5),
     ),
     child: Row(
+      
       spacing: 10,
       children: [
         CircleAvatar(
@@ -496,7 +582,7 @@ Widget returnPolicyWidget() {
   );
 }
 
-Widget productInfo() {
+Widget productInfo(Products product) {
   return Container(
     padding: EdgeInsets.all(10),
     decoration: BoxDecoration(
@@ -516,29 +602,74 @@ Widget productInfo() {
             fontWeight: FontWeight.bold,
           ),
         ),
-        Row(spacing: 30, children: [Text('SKU'), Text('BEA-ESS-ESS-001')]),
+          const SizedBox(height: 14),
+
+          _infoRow(
+            title: 'Category',
+            value: product.category ?? '-',
+          ),
+
         Divider(),
 
-        Row(spacing: 30, children: [Text('SKU'), Text('BEA-ESS-ESS-001')]),
-        Divider(),
-        Row(
-          spacing: 30,
-          children: [Text('Dimension'), Text('BEA-ESS-ESS-001')],
-        ),
+          _infoRow(
+            title: 'Brand',
+            value: product.brand ?? '-',
+          ),
+
         Divider(),
 
-        Row(
-          spacing: 30,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.qr_code_2_rounded, color: Colors.black),
-                Text('Qr code'),
-              ],
-            ),
-            Text('BEA-ESS-ESS-001'),
-          ],
-        ),
+          _infoRow(
+            title: 'Tags',
+            value: product.tags?.join(', ') ?? '-',
+          ),
+
+        Divider(),
+
+          _infoRow(
+            title: 'SKU',
+            value: product.sku ?? '-',
+          ),
+
+        Divider(),
+
+          _infoRow(
+            title: 'Barcode',
+            value: product.meta?.barcode ?? '-',
+          ),
+
+          const SizedBox(height: 12),
+
+          Row(
+            children: [
+              const Icon(
+                Icons.qr_code_2,
+                size: 32,
+                color: Color(0xff344054),
+              ),
+
+              const SizedBox(width: 12),
+
+              const Expanded(
+                child: Text(
+                  'QR Code',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xff667085),
+                  ),
+                ),
+              ),
+Expanded(
+  child: Container(
+    height: 40,
+  
+    child: Image.network(product.meta?.qrCode??'',fit: BoxFit.contain)),
+),
+              const Icon(
+                Icons.chevron_right,
+                color: Color(0xff667085),
+              ),
+            ],
+          ),
       ],
     ),
   );

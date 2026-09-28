@@ -131,13 +131,23 @@ paymentMethodWidget(selectedPayment=='card', () {
   setState(() {
     selectedPayment='card';
   });
-},),
+},'assets/images/mastercard-26161.png'),
 SizedBox(height: 10,),
 paymentMethodWidget(selectedPayment=='apple', () {
   setState(() {
     selectedPayment='apple';
   });
-},),
+},'assets/images/png-apple-logo-9713.png'),
+SizedBox(height: 10,),
+
+paymentMethodWidget(selectedPayment=='apple', () {
+  setState(() {
+    selectedPayment='gpay';
+  });
+},'assets/images/google-plus-png-logo-3704.png'),
+
+SizedBox(height: 10,),
+
               const Text(
                 'Order Summary',
                 style: TextStyle(
@@ -178,13 +188,6 @@ paymentMethodWidget(selectedPayment=='apple', () {
                 titleFontSize: 17,
                 priceFontSize: 19,
               ),
-
-
-
-
-       
-    
-       
       
             ],
           ),
@@ -243,6 +246,7 @@ paymentMethodWidget(selectedPayment=='apple', () {
     );
   }
    Widget paymentMethodWidget(final bool isSelected,   final VoidCallback onTap,
+  final String imageUrl
 ){
 return  GestureDetector(
       onTap: onTap,
@@ -293,7 +297,19 @@ return  GestureDetector(
     ),
               const SizedBox(width: 14),
 
-              
+            Image.asset(
+              height: 25,
+              width: 25,
+              imageUrl,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(
+                  Icons.image_outlined,
+                  color: Color(0xFFB0B2B7),
+                  size: 30,
+                );
+              },
+            ),
 
               const SizedBox(width: 8),
 

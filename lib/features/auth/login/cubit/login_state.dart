@@ -25,4 +25,6 @@ class LoginState {
       loginstatus: status ?? loginstatus,
     );
   }
+
+  
 }

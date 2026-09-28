@@ -14,7 +14,10 @@ class ScreenCart extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+                        Navigator.pop(context);
+
+          },
           icon: const Icon(
             Icons.arrow_back_ios_new,
             size: 20,
