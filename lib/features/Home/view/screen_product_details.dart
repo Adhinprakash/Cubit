@@ -1,6 +1,9 @@
+import 'package:cubit/features/cart/cubit/cart_cubit.dart';
+import 'package:cubit/features/cart/model/cart_model.dart';
 import 'package:cubit/features/favorites/cubit/favorite_cubit.dart';
 import 'package:cubit/model/product_model.dart';
 import 'package:cubit/widgets/custom_button.dart';
+import 'package:cubit/widgets/selector_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,8 +16,19 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+   String selectedcolor='';
+  String selectdsize='';
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    selectdsize='';
+    selectedcolor='';
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) 
+{
+ 
     final topPadding = MediaQuery.of(context).padding.top;
     bool isfav= context.select<FavoriteCubit,bool>((cubit)=>cubit.isFav(widget.product.id.toString()));
     return Scaffold(
@@ -138,31 +152,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                   Row(
                     spacing: 10,
                     children: [
-                      Container(
-                        width: 100,
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Center(child: Text('Color')),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
-                        ),
-                      ),
+                     ColorSelector(contents: ['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow'],title: 'Colors',onChanged: (value) => setState(() {
+                       selectedcolor=value;
+                     }),),
 
-                      Container(
-                        width: 100,
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Center(child: Text('')),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
-                        ),
-                      ),
+                   ColorSelector(contents: ['S','M','L','XL',],title: 'Sizes',onChanged: (value) =>setState(() {
+                    selectdsize=value;
+                   }),)
                     ],
                   ),
                   SizedBox(height: 17),
@@ -210,11 +206,28 @@ class _ProductDetailsState extends State<ProductDetails> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            cartCountWidget(),
+
+            Builder(
+              builder: (context) {
+                return CustomButton(ontap: () {
+                     final cartId= '${widget.product.id}_${selectedcolor}_${selectdsize}';
+
+                  CartModel cartmodle=CartModel(id: cartId, name: widget.product.title??'', price: widget.product.price??0.0, selectedColor: selectedcolor, selectedSize: selectdsize, imageUrl: widget.product.thumbnail??'');
+                
+                                  context.read<CartCubit>().addToCart(cartmodle);
+             
+                
+                }, buttonWidget: Text( 
+                 context.watch<CartCubit>().isIncart(widget.product.id.toString(), selectedcolor, selectdsize)?
+                  'Go to Cart':'Add to Cart',
+                    style: TextStyle(color: Colors.white, fontSize: 15),));
+              }
+            ),
             CustomButton(
-              ontap: () {},
+              ontap: () {
+              },
               buttonWidget: Text(
-                'Add to cart',
+                'Buy at \$${widget.product.price.toString()}',
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
             ),
@@ -674,3 +687,5 @@ Expanded(
     ),
   );
 }
+
+

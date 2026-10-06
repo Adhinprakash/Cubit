@@ -7,6 +7,8 @@ import 'package:cubit/features/auth/login/cubit/login_cubit.dart';
 import 'package:cubit/features/auth/login/view/login.dart';
 import 'package:cubit/features/auth/signup/cubit/signup_cubit.dart';
 import 'package:cubit/features/auth/signup/view/sign_up.dart';
+import 'package:cubit/features/cart/cubit/cart_cubit.dart';
+import 'package:cubit/features/cart/repository/cart_repository.dart';
 import 'package:cubit/features/favorites/cubit/favorite_cubit.dart';
 import 'package:cubit/features/favorites/repository/fav_repository.dart';
 import 'package:cubit/firebase_options.dart';
@@ -35,7 +37,9 @@ class MyApp extends StatelessWidget {
 BlocProvider(create: (context) => SignupCubit(authRepository: AuthRepository()),),
 BlocProvider(create: (context) => LoginCubit(authRepository: AuthRepository()),),
 BlocProvider(create:(context)=>ProductsCubit(repository: ProductsRepository())),
-BlocProvider(create:(context)=>FavoriteCubit(favRepository: FavRepository()))
+BlocProvider(create:(context)=>FavoriteCubit(favRepository: FavRepository())),
+BlocProvider(create:(context)=>CartCubit(repository: CartRepository()))
+
 
 
     ], child: MaterialApp(

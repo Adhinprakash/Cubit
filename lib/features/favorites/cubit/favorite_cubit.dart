@@ -29,7 +29,7 @@ await favRepository.addFavorite(productId);
  
 }else{
   favCopyset.remove(productId);
-  emit(state.copyWith(favList:favCopyset));
+  emit(state.copyWith(favList:favCopyset,));
 
 await favRepository.removeFavorite(productId);
 

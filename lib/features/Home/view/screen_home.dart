@@ -3,6 +3,7 @@ import 'package:cubit/const/const.dart';
 import 'package:cubit/features/Home/cubit/products_cubit.dart';
 import 'package:cubit/features/Home/cubit/products_state.dart';
 import 'package:cubit/features/Home/view/screen_product_details.dart';
+import 'package:cubit/features/cart/cubit/cart_cubit.dart';
 import 'package:cubit/features/cart/view/screen_cart.dart';
 import 'package:cubit/features/favorites/cubit/favorite_cubit.dart';
 import 'package:cubit/features/favorites/view/screen_fav.dart';
@@ -23,6 +24,8 @@ class _ScreenHomeState extends State<ScreenHome> {
     super.initState();
     context.read<ProductsCubit>().getallProducts();
     context.read<FavoriteCubit>().loadAllFavorites();
+        context.read<CartCubit>().fetchAllCartitems();
+
   }
 
   @override

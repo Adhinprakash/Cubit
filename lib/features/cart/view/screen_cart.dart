@@ -1,6 +1,11 @@
 
+import 'package:cubit/features/cart/cubit/cart_cubit.dart';
+import 'package:cubit/features/cart/cubit/cart_state.dart';
+import 'package:cubit/features/cart/model/cart_model.dart';
 import 'package:cubit/features/checkout/view/screen_checkout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class ScreenCart extends StatelessWidget {
   const ScreenCart({super.key});
@@ -46,22 +51,24 @@ class ScreenCart extends StatelessWidget {
       ),
 
       body:
-      Padding(
+    BlocBuilder<CartCubit,CartState>(builder: (context, state) {
+
+if(state.cartItems.isEmpty){
+ return EmptyCartScreen();
+}
+      return   Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             
         Expanded(child: ListView.builder(
-          itemCount: 19,
+          itemCount: state.cartItems.length,
           itemBuilder: (context, index) {
+            final cartItem=state.cartItems[index];
+
           return CartItemCard(
-              imageUrl:
-                  'https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/1.webp',
-              title: 'Essence Mascara Lash Princess',
-              subtitle: 'Black',
-              price: 9.99,
-              quantity: 1,
+            cartModel: cartItem,
             );
         
         },)),
@@ -131,49 +138,56 @@ class ScreenCart extends StatelessWidget {
           
           ],
         ),
-      ),
+      );
+    },),
 
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-        decoration: const BoxDecoration(color: Color(0xFFF8F9FA)),
-        child: SizedBox(
-          height: 56,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenCheckout()));
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF20B86B),
-              foregroundColor: Colors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+      bottomNavigationBar: !context.watch<CartCubit>().isCartEmpty()? Builder(
+        builder: (context) {
+          final totalprice=context.read<CartCubit>().getTotalprice().roundToDouble();
+          String displayPrice = totalprice.toStringAsFixed(2);
+          return Container(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+            decoration: const BoxDecoration(color: Color(0xFFF8F9FA)),
+            child: SizedBox(
+              height: 56,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenCheckout()));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF20B86B),
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                child:  Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Checkout',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      '•',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      '\$${displayPrice}',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(width: 6),
+                    Icon(Icons.arrow_forward, size: 19),
+                  ],
+                ),
               ),
             ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Checkout',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-                SizedBox(width: 8),
-                Text(
-                  '•',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(width: 8),
-                Text(
-                  '\$2,642.99',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                ),
-                SizedBox(width: 6),
-                Icon(Icons.arrow_forward, size: 19),
-              ],
-            ),
-          ),
-        ),
-      ),
+          );
+        }
+      ):SizedBox()
     );
   }
 }
@@ -181,23 +195,16 @@ class ScreenCart extends StatelessWidget {
 
 
 class CartItemCard extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final String subtitle;
-  final double price;
-  final int quantity;
+final CartModel cartModel;
 
   const CartItemCard({
     super.key,
-    required this.imageUrl,
-    required this.title,
-    required this.subtitle,
-    required this.price,
-    required this.quantity,
+    required, required this.cartModel,
   });
 
   @override
   Widget build(BuildContext context) {
+    final itemTotalPrice=cartModel.price*cartModel.quantity;
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -218,7 +225,7 @@ class CartItemCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(14),
               child: Image.network(
-                imageUrl,
+                cartModel.imageUrl,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   return const Icon(
@@ -244,7 +251,7 @@ class CartItemCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          title,
+                            cartModel.name,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -272,7 +279,7 @@ class CartItemCard extends StatelessWidget {
                   const SizedBox(height: 5),
 
                   Text(
-                    subtitle,
+                    cartModel.selectedColor,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -287,7 +294,7 @@ class CartItemCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${price.toStringAsFixed(2)}',
+                        '\$${itemTotalPrice}',
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
@@ -296,9 +303,9 @@ class CartItemCard extends StatelessWidget {
                       ),
 
                       QuantitySelector(
-                        quantity: quantity,
-                        onMinus: () {},
-                        onPlus: () {},
+                        quantity: cartModel.quantity,
+                        onMinus: () {context.read<CartCubit>().decreaseQuantity(cartModel);},
+                        onPlus: () {context.read<CartCubit>().increaseQuantity(cartModel);},
                       ),
                     ],
                   ),
@@ -379,3 +386,43 @@ class _QuantityButton extends StatelessWidget {
   }
 }
 
+class EmptyCartScreen extends StatelessWidget {
+  const EmptyCartScreen({super.key, this.onShopNow});
+
+  final VoidCallback? onShopNow;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Lottie.asset('assets/lotties/empty_cart.json', width: 180, height: 180),
+          const SizedBox(height: 8),
+          const Text(
+            'Your cart is empty',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Add something you love!',
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: onShopNow,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF20B86B),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+            child: const Text('Shop Now'),
+          ),
+        ],
+      ),
+    );
+  }
+}
