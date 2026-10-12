@@ -22,6 +22,21 @@ emit(state.copyWith(status: LoginStatus.loaded));
   }
     
   }
+
+
+Future<void>resetPassword(String email)async{
+  try {
+    emit(state.copyWith(status: LoginStatus.loading));
+    await authRepository.resetPassword(email);
+    emit(state.copyWith(status: LoginStatus.loaded));
+  } on FirebaseAuthException catch (e){
+    emit(state.copyWith(errormessage: e.message??'Unable to send reset mail',status:LoginStatus.errormessage));
+  }catch(e){
+    emit(state.copyWith(status: LoginStatus.errormessage,errormessage: 'Something went wrong. Please try again'));
+    
+  }
+}
+
   Future<void>logout()async{
 
    await FirebaseAuth.instance.signOut();

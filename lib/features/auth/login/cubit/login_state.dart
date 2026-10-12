@@ -1,18 +1,6 @@
 enum LoginStatus { initial, loading, loaded, errormessage }
 
-// class LoginInitial extends LoginState{
-//   LoginInitial();
-// }
-// class LoginLoading extends LoginState{
-//   LoginLoading();
-// }
-// class LoginLoaded extends LoginState{
-//   LoginLoaded();
-// }
-// class LoginError extends LoginState{
-//   final String error;
-//   LoginError({required this.error});
-// }
+
 class LoginState {
   final LoginStatus loginstatus;
   final String? errorMessage;

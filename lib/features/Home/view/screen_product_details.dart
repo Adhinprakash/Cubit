@@ -16,13 +16,15 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-   String selectedcolor='';
-  String selectdsize='';
+ List<String> colors =['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow'];
+List<String> sizes=['S','M','L','XL',];
+   late String selectedcolor;
+ late String selectdsize;
   @override
   void initState() {
     // TODO: implement initState
-    selectdsize='';
-    selectedcolor='';
+    selectdsize=sizes.first;
+    selectedcolor=colors.first;
     super.initState();
   }
   @override
@@ -152,11 +154,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                   Row(
                     spacing: 10,
                     children: [
-                     ColorSelector(contents: ['Red', 'Blue', 'Green', 'Black', 'White', 'Yellow'],title: 'Colors',onChanged: (value) => setState(() {
+                     ColorSelector(contents:colors ,title: 'Colors',onChanged: (value) => setState(() {
                        selectedcolor=value;
                      }),),
 
-                   ColorSelector(contents: ['S','M','L','XL',],title: 'Sizes',onChanged: (value) =>setState(() {
+                   ColorSelector(contents:sizes,title: 'Sizes',onChanged: (value) =>setState(() {
                     selectdsize=value;
                    }),)
                     ],

@@ -152,7 +152,7 @@ if(state.cartItems.isEmpty){
               height: 56,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenCheckout()));
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenCheckout(subtotal: totalprice,)));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF20B86B),

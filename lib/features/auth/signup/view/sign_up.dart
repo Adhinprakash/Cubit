@@ -2,21 +2,30 @@ import 'package:cubit/features/auth/login/view/login.dart';
 import 'package:cubit/features/auth/signup/cubit/signup_cubit.dart';
 import 'package:cubit/features/auth/signup/cubit/signup_state.dart';
 import 'package:cubit/features/Home/view/screen_home.dart';
+import 'package:cubit/widgets/bottom_navigation.dart';
 import 'package:cubit/widgets/custom_button.dart';
 import 'package:cubit/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  bool _obscurePassword = true;
     TextEditingController emailcontroller = TextEditingController();
     TextEditingController passwordcontroller = TextEditingController();
     TextEditingController rePasswordcontroller = TextEditingController();
     final formkey = GlobalKey<FormState>();
 
+
+  @override
+  Widget build(BuildContext context) {
+  
     String? checkValidator(String? value, String type) {
       final emailRegex = RegExp(r'^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$');
 
@@ -44,6 +53,7 @@ class SignUpScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -60,34 +70,46 @@ class SignUpScreen extends StatelessWidget {
                   children: [
                     Center(child: Text('Sign Up', style: TextStyle(color: Colors.black,fontSize: 28,fontWeight: FontWeight.bold))),
 
-                    textWidget('Enter you Email', emailcontroller),
-                    CustomTextfield(
+                   CustomTextfield(
+                    prefixIcon:  const Icon(Icons.mail_outline_rounded),
                       textEditingController: emailcontroller,
-                      hintText: '',
+                      hintText: 'Enter you Email',
                       obscureText: false,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) => checkValidator(value, 'Email'),
                     ),
-                    textWidget('Enter you Password', emailcontroller),
+                    SizedBox(height: 10,),
+
                     CustomTextfield(
+                    
                       textEditingController: passwordcontroller,
-                      hintText: '',
-                      obscureText: false,
+                      hintText: 'Enter you Password',
+                      obscureText: _obscurePassword,
                       keyboardType: TextInputType.text,
                       validator: (value) => checkValidator(value, 'Password'),
+                                      prefixIcon:  Icon(Icons.lock_outline_rounded),
+                                      suffixIcon: IconButton(onPressed: (){
+                                        setState(() {
+                                          _obscurePassword=!_obscurePassword;
+                                        });
+                                      }, icon: Icon(_obscurePassword?Icons.visibility_off_outlined:Icons.visibility)),
                     ),
-
-                    textWidget('Re enter your Password', rePasswordcontroller),
+SizedBox(height: 10,),
 
                     CustomTextfield(
                       textEditingController: rePasswordcontroller,
-                      hintText: '',
+                      hintText: 'Re-Enter your Password',
                       obscureText: false,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.text,
                       validator: (value) => checkValidator(value, 'Repassword'),
+                                                            prefixIcon: const Icon(Icons.lock_outline_rounded),
+                                                          
+
                     ),
+SizedBox(height: 10,),
 
                     CustomButton(
+                      
                       ontap: () {
                        if(formkey.currentState!.validate()){
                          context.read<SignupCubit>().signUp(
@@ -130,12 +152,7 @@ class SignUpScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Sign up successfull')),
                             );
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const ScreenHome(),
-                              ),
-                            );
+                         
                           }
                         
             },)
@@ -143,9 +160,5 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget textWidget(String text, TextEditingController texteditingcontrolller) {
-    return Text(text, style: TextStyle(color: Colors.grey, fontSize: 11));
   }
 }

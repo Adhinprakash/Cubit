@@ -13,11 +13,11 @@ class CustomButton extends StatelessWidget {
         ontap();
       },
       child: Container(
-        width: 200,
+        width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal:12,vertical: 6),
         height: 50,
       
-        decoration: BoxDecoration(color: Colors.green,shape: BoxShape.rectangle,borderRadius: BorderRadius.circular(15)),
+        decoration: BoxDecoration(color: Color(0xFF20B86B),shape: BoxShape.rectangle,borderRadius: BorderRadius.circular(15)),
         
         child: Center(child: buttonWidget),
       ),

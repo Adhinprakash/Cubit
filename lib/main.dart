@@ -9,10 +9,12 @@ import 'package:cubit/features/auth/signup/cubit/signup_cubit.dart';
 import 'package:cubit/features/auth/signup/view/sign_up.dart';
 import 'package:cubit/features/cart/cubit/cart_cubit.dart';
 import 'package:cubit/features/cart/repository/cart_repository.dart';
+import 'package:cubit/features/checkout/cubit/checkout_cubit.dart';
 import 'package:cubit/features/favorites/cubit/favorite_cubit.dart';
 import 'package:cubit/features/favorites/repository/fav_repository.dart';
 import 'package:cubit/firebase_options.dart';
 import 'package:cubit/widgets/bottom_navigation.dart';
+import 'package:cubit/widgets/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +40,8 @@ BlocProvider(create: (context) => SignupCubit(authRepository: AuthRepository()),
 BlocProvider(create: (context) => LoginCubit(authRepository: AuthRepository()),),
 BlocProvider(create:(context)=>ProductsCubit(repository: ProductsRepository())),
 BlocProvider(create:(context)=>FavoriteCubit(favRepository: FavRepository())),
-BlocProvider(create:(context)=>CartCubit(repository: CartRepository()))
+BlocProvider(create:(context)=>CartCubit(repository: CartRepository())),
+
 
 
 
@@ -46,10 +49,10 @@ BlocProvider(create:(context)=>CartCubit(repository: CartRepository()))
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-              
+        fontFamily: 'Montserrat',
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: NavigationPages()
+      home: SplashScreen()
     ));
   }
 }
