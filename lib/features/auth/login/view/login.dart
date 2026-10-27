@@ -227,7 +227,12 @@ setState(() {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset('assets/images/google-plus-png-logo-3704.png', height: 24, width: 24),
+                            GestureDetector(
+                              onTap: () =>  context.read<LoginCubit>().login(
+                                        emailcontroller.text,
+                                        passwordcontroller.text,
+                                      ),
+                              child: Image.asset('assets/images/google-plus-png-logo-3704.png', height: 24, width: 24)),
                             const SizedBox(width: 12),
                             const Text(
                               'Continue with Google',

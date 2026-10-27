@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:cubit/features/auth/repository/auth_repository.dart';
+import 'package:cubit/features/auth/repository/auth_firebase_repository.dart';
 import 'package:cubit/features/auth/login/cubit/login_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginCubit extends Cubit<LoginState>{
-  AuthRepository authRepository=AuthRepository();
+  FirebaseAuthRepository authRepository=FirebaseAuthRepository();
   LoginCubit({required this.authRepository}):super(LoginState());
 
 
@@ -35,6 +35,20 @@ Future<void>resetPassword(String email)async{
     emit(state.copyWith(status: LoginStatus.errormessage,errormessage: 'Something went wrong. Please try again'));
     
   }
+}
+
+Future<void>loginWithGoogle()async{
+    try{
+emit(state.copyWith(status: LoginStatus.loading));
+  UserCredential userCredential=await authRepository.googleLogin();
+await authRepository.addTofirebase(userCredential.user?.uid??"",userCredential.user?.email??'');
+emit(state.copyWith(status: LoginStatus.loaded));
+  } on FirebaseAuthException catch(e){
+    emit(state.copyWith(status: LoginStatus.errormessage,errormessage: e.toString()));
+  }catch(e){
+    emit(state.copyWith(status: LoginStatus.errormessage,errormessage: e.toString()));
+  }
+    
 }
 
   Future<void>logout()async{

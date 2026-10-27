@@ -1,10 +1,10 @@
-import 'package:cubit/features/auth/repository/auth_repository.dart';
+import 'package:cubit/features/auth/repository/auth_firebase_repository.dart';
 import 'package:cubit/features/auth/signup/cubit/signup_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignupCubit extends Cubit<SignupState>{
-  final AuthRepository authRepository;
+  final FirebaseAuthRepository authRepository;
    SignupCubit({required this.authRepository}):super(SignUpInitial());
 
 

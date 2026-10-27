@@ -12,7 +12,20 @@
           "package_name": "com.example.cubit"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1088886341534-qmfqpjkuvidr60la86msehavhhdl85ao.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cubit",
+            "certificate_hash": "91c00d1f5032ff6e920f96a415601a78d8ed762e"
+          }
+        },
+        {
+          "client_id": "1088886341534-omuoel7si1mk4q5t6809oil0pfcs7omi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAx3x6qfkKRKOccgtVx9J6Ibw8Frwx6Rhk"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1088886341534-omuoel7si1mk4q5t6809oil0pfcs7omi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1088886341534-71n6co48qn6hoeam5097bjsl85elrpns.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cubit"
+              }
+            }
+          ]
         }
       }
     }
