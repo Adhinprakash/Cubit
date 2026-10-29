@@ -1,6 +1,7 @@
 import 'package:cubit/features/auth/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 class FirebaseAuthRepository implements AuthRepository {
 
@@ -18,12 +19,13 @@ class FirebaseAuthRepository implements AuthRepository {
   // Future<UserCredential>login({ required String email,required String password})async{
   //   return await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
   // }
-Future<void>addTofirebase(String uid,String email)async{
+Future<void>addTofirebase(String uid,String email,String username)async{
 try {
   await FirebaseFirestore.instance
     .collection('Users')
     .doc(uid)
     .set({
+   'username':username, 
   'email': email,
   'createdAt': FieldValue.serverTimestamp(),
 });
@@ -61,8 +63,10 @@ Future<void>resetPassword(String email)async{
 
   @override
   Future<UserCredential> googleLogin() async{
-
-final GoogleSignIn googlesignin= await GoogleSignIn.instance;
+  if (kIsWeb) {
+    return firebaseAuth.signInWithPopup(GoogleAuthProvider());
+  }
+final GoogleSignIn googlesignin=  GoogleSignIn.instance;
 
 final GoogleSignInAccount account=await googlesignin.authenticate();
       final GoogleSignInAuthentication googleAuth = account.authentication;

@@ -1,8 +1,7 @@
 import 'package:cubit/features/auth/login/view/login.dart';
 import 'package:cubit/features/auth/signup/cubit/signup_cubit.dart';
 import 'package:cubit/features/auth/signup/cubit/signup_state.dart';
-import 'package:cubit/features/Home/view/screen_home.dart';
-import 'package:cubit/widgets/bottom_navigation.dart';
+
 import 'package:cubit/widgets/custom_button.dart';
 import 'package:cubit/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -13,16 +12,32 @@ class SignUpScreen extends StatefulWidget {
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
+
+  
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
+  
   bool _obscurePassword = true;
     TextEditingController emailcontroller = TextEditingController();
+        TextEditingController usernamecontroller = TextEditingController();
+
     TextEditingController passwordcontroller = TextEditingController();
     TextEditingController rePasswordcontroller = TextEditingController();
     final formkey = GlobalKey<FormState>();
 
+  
 
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    emailcontroller.clear();
+    passwordcontroller.clear();
+    rePasswordcontroller.clear();
+    usernamecontroller.clear();
+  }
   @override
   Widget build(BuildContext context) {
   
@@ -48,6 +63,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
         } else if (value != passwordcontroller.text) {
           return 'Password does not match';
         }
+      }else if(type=='username'){
+          if (value == null || value.trim().isEmpty) {
+    return 'Username cannot be empty';
+  } else if (value.trim().length < 3) {
+    return 'Username must be at least 3 characters';
+  } else if (value.trim().length > 20) {
+    return 'Username cannot exceed 20 characters';
+  } else if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
+    return 'Use only letters, numbers, and underscores';
+  }
       }
       return null;
     }
@@ -69,6 +94,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   children: [
                     Center(child: Text('Sign Up', style: TextStyle(color: Colors.black,fontSize: 28,fontWeight: FontWeight.bold))),
+   CustomTextfield(
+                    prefixIcon:  const Icon(Icons.mail_outline_rounded),
+                      textEditingController: emailcontroller,
+                      hintText: 'Enter you Username',
+                      obscureText: false,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) => checkValidator(value, 'username'),
+                    ),
+                    SizedBox(height: 10,),
 
                    CustomTextfield(
                     prefixIcon:  const Icon(Icons.mail_outline_rounded),
@@ -113,6 +147,7 @@ SizedBox(height: 10,),
                       ontap: () {
                        if(formkey.currentState!.validate()){
                          context.read<SignupCubit>().signUp(
+                          username:usernamecontroller.text ,
                               email: emailcontroller.text,
                               password: passwordcontroller.text,
                             );

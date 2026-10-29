@@ -8,11 +8,11 @@ class SignupCubit extends Cubit<SignupState>{
    SignupCubit({required this.authRepository}):super(SignUpInitial());
 
 
-Future<void>signUp({required String email,required String password})async{
+Future<void>signUp({required String email,required String password,String? username})async{
   try{
     emit(SignUpLoading());
  UserCredential userCredential=await authRepository.signup(email: email, password: password);
-await authRepository.addTofirebase(userCredential.user!.uid,email);emit(SignUpLoaded());
+await authRepository.addTofirebase(userCredential.user!.uid,email,username??'');emit(SignUpLoaded());
   }on FirebaseAuthException catch(e){
     emit(SignUpError(e.toString()));
   }

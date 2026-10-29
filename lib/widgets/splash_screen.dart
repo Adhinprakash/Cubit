@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cubit/features/auth/auth_gate.dart';
-import 'package:cubit/widgets/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -117,16 +116,15 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 55),
 
                  
 
                   SizedBox(
-                    height: 240,
-                    width: 300,
-
+                  
                     child: Image.asset(
-                      'assets/images/shoppy_splash.png',
+                      height: 240,
+                      width: 300,
+                      'images/splash_screen.png',
                       fit: BoxFit.contain,
                     ),
                   ),

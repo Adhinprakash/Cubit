@@ -217,6 +217,8 @@ setState(() {
                       height: 54,
                       child: OutlinedButton(
                         onPressed: () {
+                                                    context.read<LoginCubit>().loginWithGoogle();
+
                         },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(color: Colors.grey.shade300),
@@ -227,12 +229,7 @@ setState(() {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            GestureDetector(
-                              onTap: () =>  context.read<LoginCubit>().login(
-                                        emailcontroller.text,
-                                        passwordcontroller.text,
-                                      ),
-                              child: Image.asset('assets/images/google-plus-png-logo-3704.png', height: 24, width: 24)),
+                            Image.asset('assets/images/google-plus-png-logo-3704.png', height: 24, width: 24),
                             const SizedBox(width: 12),
                             const Text(
                               'Continue with Google',
