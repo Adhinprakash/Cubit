@@ -1,8 +1,8 @@
 import 'package:cubit/features/auth/ForgotPassword/forgot_password.dart';
-import 'package:cubit/features/auth/login/cubit/login_cubit.dart';
-import 'package:cubit/features/auth/login/cubit/login_state.dart';
+import 'package:cubit/features/auth/presentation/login/cubit/login_cubit.dart';
+import 'package:cubit/features/auth/presentation/login/cubit/login_state.dart';
 
-import 'package:cubit/features/auth/signup/view/sign_up.dart';
+import 'package:cubit/features/auth/presentation/signup/view/sign_up.dart';
 import 'package:cubit/widgets/custom_button.dart';
 import 'package:cubit/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -145,8 +145,15 @@ setState(() {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPassword(),));
-                        },
+ Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => BlocProvider.value(
+        value: context.read<LoginCubit>(),
+        child: ForgotPassword(),
+      ),
+    ),
+  );                        },
                         style: TextButton.styleFrom(foregroundColor: kPrimary),
                         child: const Text('Forgot password?',
                             style: TextStyle(fontWeight: FontWeight.w600)),
@@ -256,11 +263,11 @@ setState(() {
                             padding: const EdgeInsets.symmetric(horizontal: 6),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignUpScreen()),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => SignUpScreen()),
+                            // );
                           },
                           child: const Text('Sign Up',
                               style: TextStyle(fontWeight: FontWeight.w700)),

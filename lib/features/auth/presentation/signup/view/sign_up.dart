@@ -1,6 +1,7 @@
-import 'package:cubit/features/auth/login/view/login.dart';
-import 'package:cubit/features/auth/signup/cubit/signup_cubit.dart';
-import 'package:cubit/features/auth/signup/cubit/signup_state.dart';
+import 'package:cubit/features/auth/presentation/login/view/login.dart';
+import 'package:cubit/features/auth/presentation/signup/cubit/signup_cubit.dart';
+import 'package:cubit/features/auth/presentation/signup/cubit/signup_state.dart';
+
 
 import 'package:cubit/widgets/custom_button.dart';
 import 'package:cubit/widgets/custom_textfield.dart';
@@ -84,10 +85,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
           padding: const EdgeInsets.all(12),
           child: Form(
             key: formkey,
-            child: BlocConsumer<SignupCubit,SignupState>(
+            child: BlocBuilder<SignupCubit,SignupState>(
               
               
               builder: (context, state) {
+
+              bool  isloading=state.signUpstatus==Signupstatus.loading;
          return     Column(
                   spacing: 10,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,7 +156,7 @@ SizedBox(height: 10,),
                             );
                        }
                       },
-                      buttonWidget: state is SignUpLoading
+                      buttonWidget: isloading
                           ? CircularProgressIndicator()
                           : Text(
                               'Sign Up',
@@ -175,21 +178,6 @@ SizedBox(height: 10,),
                     ),
                   ],
                 );
-            }, listener: (context, state) {
-                          if (state is SignUpError) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(state.error)),
-                            );
-                          }
-
-                          if (state is SignUpLoaded) {
-                           
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Sign up successfull')),
-                            );
-                         
-                          }
-                        
             },)
           ),
         ),

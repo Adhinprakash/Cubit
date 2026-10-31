@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:cubit/features/auth/login/cubit/login_cubit.dart';
-import 'package:cubit/features/auth/login/view/login.dart';
+import 'package:cubit/features/auth/presentation/login/cubit/login_cubit.dart';
+import 'package:cubit/features/auth/presentation/login/view/login.dart';
 
 class ScreenProfile extends StatelessWidget {
   const ScreenProfile({super.key});

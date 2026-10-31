@@ -1,5 +1,5 @@
-import 'package:cubit/features/auth/login/cubit/login_cubit.dart';
-import 'package:cubit/features/auth/login/cubit/login_state.dart';
+import 'package:cubit/features/auth/presentation/login/cubit/login_cubit.dart';
+import 'package:cubit/features/auth/presentation/login/cubit/login_state.dart';
 import 'package:cubit/widgets/custom_button.dart';
 import 'package:cubit/widgets/custom_snackbar.dart';
 import 'package:cubit/widgets/custom_textfield.dart';

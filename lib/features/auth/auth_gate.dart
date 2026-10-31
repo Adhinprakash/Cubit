@@ -1,4 +1,5 @@
-import 'package:cubit/features/auth/login/view/login.dart';
+import 'package:cubit/features/auth/di/auth_dependencies.dart';
+import 'package:cubit/features/auth/presentation/login/view/login.dart';
 import 'package:cubit/features/auth/repository/authenticated.dart';
 import 'package:cubit/widgets/bottom_navigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +22,7 @@ class AuthGate extends StatelessWidget {
           return Authenticated();
         }
 
-        return LoginScreen();
+        return AuthDependencies(child: LoginScreen());
       },);
   }
 }
